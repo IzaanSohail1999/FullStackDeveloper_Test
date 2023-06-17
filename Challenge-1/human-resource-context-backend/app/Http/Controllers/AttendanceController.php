@@ -19,11 +19,11 @@ class AttendanceController extends Controller
         $this->attendanceService->createAttendance($request);
 
         //When accessing from postman / react, uncomment this.
-        return response()->json(['message' => 'Attendance uploaded successfully']);
+//        return response()->json(['message' => 'Attendance uploaded successfully']);
 
         //When using Laravel Blade, uncomment this.
-        //$attendanceInformation = $this->attendanceService->getAttendanceInformation();
-        //return view('attendance', ['attendance' => $attendanceInformation->getData()]);
+        $attendanceInformation = $this->attendanceService->getAttendanceInformation();
+        return view('attendance', ['attendance' => $attendanceInformation->getData()]);
     }
 
     public function getAttendance()
@@ -31,9 +31,9 @@ class AttendanceController extends Controller
         $attendanceInformation = $this->attendanceService->getAttendanceInformation();
 
         //When accessing from postman / react, uncomment this.
-        return response()->json($attendanceInformation->getData());
+//        return response()->json($attendanceInformation->getData());
 
         //When using Laravel Blade, uncomment this.
-//        return view('attendance', ['attendance' => $attendanceInformation->getData()]);
+        return view('attendance', ['attendance' => $attendanceInformation->getData()]);
     }
 }
