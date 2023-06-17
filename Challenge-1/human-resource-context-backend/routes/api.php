@@ -16,8 +16,13 @@ use App\Http\Controllers\AttendanceController;
 |
 */
 
+// Get the authenticated user
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route for uploading attendance
 Route::post('attendance/upload', [AttendanceController::class, 'upload']);
+
+// Route for retrieving attendance information
 Route::get('/attendance', [AttendanceController::class, 'getAttendance'])->name('attendance.get');

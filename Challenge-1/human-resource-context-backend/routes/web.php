@@ -15,9 +15,13 @@ use App\Http\Controllers\AttendanceController;
 |
 */
 
+// Default route to the welcome view
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Route for retrieving attendance information
 Route::get('/attendance', [AttendanceController::class, 'getAttendance'])->name('attendance');
+
+// Route for uploading attendance
 Route::post('attendance/upload', [AttendanceController::class, 'upload'])->name('attendance.upload');

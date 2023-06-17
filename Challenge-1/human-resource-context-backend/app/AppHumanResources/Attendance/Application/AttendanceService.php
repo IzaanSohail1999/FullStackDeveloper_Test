@@ -15,6 +15,7 @@ class AttendanceService
 {
     public function createAttendance(Request $request)
     {
+        // Validate the file input
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
@@ -28,12 +29,14 @@ class AttendanceService
 
         $attendanceData = [];
         foreach ($rows as $row) {
+            // Extract data from each row of the file
             $employeeId = $row[0];
             $scheduleId = $row[1];
             $present = $row[2];
             $numericDate = $row[5];
             $date = Carbon::today()->addDays($numericDate - 1)->format('Y-m-d');
 
+            // Retrieve the employee and schedule information from the database
             $employee = Employees::find($employeeId);
             $schedule = Schedules::find($scheduleId);
 
@@ -42,6 +45,7 @@ class AttendanceService
                 throw new \Exception("Employee with ID $employeeId or Schedule with ID $scheduleId does not exist");
             }
 
+            // Prepare the attendance data for insertion
             $attendanceData[] = [
                 'employee_id' => $employeeId,
                 'schedule_id' => $scheduleId,
@@ -63,20 +67,25 @@ class AttendanceService
 
     public function getAttendanceInformation()
     {
+        // Retrieve all employees
         $employees = Employees::all();
         $attendanceData = [];
 
         foreach ($employees as $employee) {
             $employeeId = $employee->id;
+
+            // Retrieve attendance records for the employee with the associated schedule and shift information
             $attendance = Attendance::with(['schedule.shift'])
                 ->where('employee_id', $employeeId)
                 ->where('present', 1) // Only consider attendance where present = 1
                 ->get();
 
+            // Calculate the total working hours based on the shift durations
             $totalWorkingHours = $attendance->sum(function ($record) {
                 return $record->schedule->shift->duration;
             });
 
+            // Prepare the attendance data for the employee
             $attendanceData[] = [
                 'employee_id' => $employee->id,
                 'employee_name' => $employee->name,

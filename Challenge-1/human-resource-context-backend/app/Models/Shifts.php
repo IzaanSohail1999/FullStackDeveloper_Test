@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Schedules;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Shifts extends Model
 {
@@ -17,6 +18,12 @@ class Shifts extends Model
         'duration',
     ];
 
+
+    /**
+     * Define the relationship with the Schedules model.
+     *
+     * @return HasMany
+     */
     public function schedules()
     {
         return $this->hasMany(Schedules::class);

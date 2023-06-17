@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\AppHumanResources\Attendance\Application\AttendanceService;
+use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
@@ -14,6 +14,11 @@ class AttendanceController extends Controller
         $this->attendanceService = $attendanceService;
     }
 
+    /**
+     * Upload attendance data from a file.
+     *
+     * @param Request $request
+     */
     public function upload(Request $request)
     {
         $this->attendanceService->createAttendance($request);
@@ -26,6 +31,9 @@ class AttendanceController extends Controller
 //        return view('attendance', ['attendance' => $attendanceInformation->getData()]);
     }
 
+    /**
+     * Get attendance information.
+     */
     public function getAttendance()
     {
         $attendanceInformation = $this->attendanceService->getAttendanceInformation();
